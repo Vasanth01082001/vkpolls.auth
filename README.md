@@ -1,0 +1,1 @@
+# vkpolls.auth
