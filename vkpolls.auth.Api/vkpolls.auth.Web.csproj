@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VkPolls.Api\vkpolls.auth.ApiClient.csproj" />
+    <ProjectReference Include="..\vkpolls.auth.application\vkpolls.auth.Application.csproj" />
+    <ProjectReference Include="..\vkpolls.auth.Identity\vkpolls.auth.Identity.csproj" />
+    <ProjectReference Include="..\vkpolls.auth.Infrastructure\vkpolls.auth.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
