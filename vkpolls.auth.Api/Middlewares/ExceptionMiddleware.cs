@@ -91,10 +91,10 @@ namespace vkpolls.auth.Api.Middlewares
                 default:
                     problem = new CustomProblemDetails
                     {
-                        Title = ex.Message,
+                        Title = "Problem from our side, please try again later!",
                         Status = (int)statusCode,
                         Type = nameof(HttpStatusCode.InternalServerError),
-                        Detail = ex.StackTrace
+                        Detail = ex.Message + ex.StackTrace
                     };
                     break;
             }

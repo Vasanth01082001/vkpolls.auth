@@ -9,7 +9,7 @@ namespace vkpolls.auth.Application.Contracts.Identity
 {
     public interface IAuthService
     {
-        Task<string> LoginAsync(UserAuthIdentity userAuthIdentity);
-        Task<string> RegisterAsync(UserAuthIdentity userAuthIdentity);
+        Task LoginAsync(UserAuthIdentity userAuthIdentity);
+        Task RegisterAsync(UserAuthIdentity userAuthIdentity);
     }
 }

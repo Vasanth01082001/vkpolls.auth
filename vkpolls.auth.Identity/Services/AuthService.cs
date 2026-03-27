@@ -29,7 +29,7 @@ namespace vkpolls.auth.Identity.Services
             _smsService = smsService;
             _emailService = emailService;
         }
-        public async Task<string> LoginAsync(UserAuthIdentity userAuthIdentity)
+        public async Task LoginAsync(UserAuthIdentity userAuthIdentity)
         {
             var username = userAuthIdentity.identifier.Trim();
 
@@ -42,7 +42,7 @@ namespace vkpolls.auth.Identity.Services
                 {
                     if(!user.EmailConfirmed)
                     {
-                        throw new BadRequestException("Confirm email before login.");
+                        throw new NotFoundException("User not found.");
                     }
 
                     var signInResult = await _signInManager.PasswordSignInAsync(user.UserName, userAuthIdentity.password, true, false);
@@ -54,7 +54,7 @@ namespace vkpolls.auth.Identity.Services
                 }
                 else
                 {
-                    throw new NotFoundException("User with the provided email not found.");
+                    throw new NotFoundException("User not found.");
                 }
             }
             else if (username.Length == 10)
@@ -65,7 +65,7 @@ namespace vkpolls.auth.Identity.Services
                 {
                     if(!user.PhoneNumberConfirmed)
                     {
-                        throw new BadRequestException("Confirm mobile number before login");
+                        throw new NotFoundException("User not found.");
                     }
 
                     var signInResult = await _signInManager.PasswordSignInAsync(user.UserName, userAuthIdentity.password, true, false);
@@ -77,16 +77,15 @@ namespace vkpolls.auth.Identity.Services
                 }
                 else
                 {
-                    throw new NotFoundException("User with the provided phone number not found.");
+                    throw new NotFoundException("User not found.");
                 }
             }
             else
             {
-                throw new UnauthorizedAccessException("Invalid credentials.");
+                throw new BadRequestException("Invalid credentials.");
             }
-            return "Login successful.";
         }
-        public async Task<string> RegisterAsync(UserAuthIdentity userAuthIdentity)
+        public async Task RegisterAsync(UserAuthIdentity userAuthIdentity)
         {
             var username = userAuthIdentity.identifier.Trim();
 
@@ -96,7 +95,16 @@ namespace vkpolls.auth.Identity.Services
                 var emailUser = await _userManager.FindByEmailAsync(username);
                 if (emailUser != null)
                 {
-                    throw new BadRequestException("A user with this email already exists.");
+                    if(emailUser.EmailConfirmed)
+                    {
+                        throw new BadRequestException("User already exists.");
+                    }
+                    else
+                    {
+                        var etoken = await _userManager.GenerateEmailConfirmationTokenAsync(emailUser);
+                        await _emailService.SendEmailVerificationAsync(emailUser.Email!, etoken);
+                        return;
+                    }
                 }
 
                 var user = new IdentityUser
@@ -115,7 +123,16 @@ namespace vkpolls.auth.Identity.Services
                 var phoneUser = _userManager.Users.FirstOrDefault(u => u.PhoneNumber == username);
                 if (phoneUser != null)
                 {
-                    throw new BadRequestException("A user with this phone number already exists.");
+                    if(phoneUser.PhoneNumberConfirmed)
+                    {
+                        throw new BadRequestException("User already exists.");
+                    }
+                    else
+                    {
+                        var ptoken = await _userManager.GenerateChangePhoneNumberTokenAsync(phoneUser, username);
+                        await _smsService.SendSmsAsync(username, ptoken);
+                        return;
+                    }
                 }
 
                 var user = new IdentityUser
@@ -132,7 +149,6 @@ namespace vkpolls.auth.Identity.Services
             {
                 throw new BadRequestException("Invalid credentials.");
             }
-            return "Registered successfully.";
         }
 
         private async Task CreateUserAsync(IdentityUser user, string password)

@@ -28,13 +28,18 @@ namespace vkpolls.auth.Api.Controllers.User
         public async Task<IActionResult> UserLogin(UserAuthIdentity userAuthIdentity)
         {
             await _authService.LoginAsync(userAuthIdentity);
-            return Ok("User logged in successfully");
+            return Ok("User logged in Successfully");
         }
 
         [HttpPost("VerifyOtp")]
         public async Task<IActionResult> VerifyOtp(OtpVerify otpVerify)
         {
-            await _authConfirmation.VerifyOtpAsync(otpVerify);
+            var result = await _authConfirmation.VerifyOtpAsync(otpVerify);
+
+            if(!result)
+            {
+                return BadRequest("Invalid OTP");
+            }
             return Ok("OTP verified successfully");
         }
 
