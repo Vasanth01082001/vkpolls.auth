@@ -9,7 +9,7 @@ namespace vkpolls.auth.Application.Contracts.Identity
 {
     public interface IAuthConfirmation
     {
-        Task<bool> VerifyOtpAsync(OtpVerify otpVerify);
-        Task<bool> VerifyEmailAsync(EmailVerify emailVerify);
+        Task VerifyOtpAsync(OtpVerify otpVerify);
+        Task VerifyEmailAsync(EmailVerify emailVerify);
     }
 }

@@ -34,36 +34,16 @@ namespace vkpolls.auth.Api.Controllers.User
         [HttpPost("VerifyOtp")]
         public async Task<IActionResult> VerifyOtp(OtpVerify otpVerify)
         {
-            var result = await _authConfirmation.VerifyOtpAsync(otpVerify);
-
-            if(!result)
-            {
-                return BadRequest("Invalid OTP");
-            }
+            await _authConfirmation.VerifyOtpAsync(otpVerify);
             return Ok("OTP verified successfully");
         }
-
-        // [HttpPost("/VerifyEmail")]
-        // public async Task<IActionResult> VerifyEmail(EmailVerify emailVerify)
-        // {
-        //     var result = await _authConfirmation.VerifyEmailAsync(emailVerify);
-        //     if (result)
-        //     {
-        //         return Ok("Email verified successfully");
-        //     }
-        //     return BadRequest("Invalid or expired token");
-        // }
 
         [HttpGet("VerifyEmail")]
         public async Task<IActionResult> VerifyEmailViaLink([FromQuery] string email, [FromQuery] string token)
         {
             var emailVerify = new EmailVerify { email = email, token = token };
-            var result = await _authConfirmation.VerifyEmailAsync(emailVerify);
-            if (result)
-            {
-                return Ok("Email verified successfully");
-            }
-            return BadRequest("Invalid or expired token");
+            await _authConfirmation.VerifyEmailAsync(emailVerify);
+            return Ok("Email verified successfully");
         }
     }
 }

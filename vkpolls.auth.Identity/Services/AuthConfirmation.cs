@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using vkpolls.auth.Application.Contracts.Identity;
+using vkpolls.auth.Application.Exceptions;
 using vkpolls.auth.Application.Models;
 
 namespace vkpolls.auth.Identity.Services
@@ -17,25 +18,43 @@ namespace vkpolls.auth.Identity.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> VerifyOtpAsync(OtpVerify otpVerify)
+        public async Task VerifyOtpAsync(OtpVerify otpVerify)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == otpVerify.phoneNumber);
-            var valid = user != null ? await _userManager.VerifyChangePhoneNumberTokenAsync(user, otpVerify.otpCode, otpVerify.phoneNumber) : false;
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.PhoneNumber == otpVerify.phoneNumber);
 
-            if (!valid) return false;
+            if (user == null)
+                throw new NotFoundException("User not found.");
 
-            user!.PhoneNumberConfirmed = true;
-            await _userManager.UpdateAsync(user);
-            return true;
+            if (user.PhoneNumberConfirmed)
+                throw new BadRequestException("Phone number is already confirmed.");
+
+            var isValid = await _userManager.VerifyChangePhoneNumberTokenAsync(
+                user, otpVerify.otpCode, otpVerify.phoneNumber);
+
+            if (!isValid)
+                throw new BadRequestException("Invalid or expired OTP.");
+
+            user.PhoneNumberConfirmed = true;
+            var result = await _userManager.UpdateAsync(user);
         }
 
-        public async Task<bool> VerifyEmailAsync(EmailVerify emailVerify)
+        public async Task VerifyEmailAsync(EmailVerify emailVerify)
         {
             var user = await _userManager.FindByEmailAsync(emailVerify.email);
-            if (user == null) return false;
 
-            var valid = await _userManager.ConfirmEmailAsync(user, emailVerify.token);
-            return valid.Succeeded;
+            if (user == null)
+                throw new NotFoundException("User not found.");
+
+            if (user.EmailConfirmed)
+                throw new BadRequestException("Email is already confirmed.");
+
+            var result = await _userManager.ConfirmEmailAsync(user, emailVerify.token);
+
+            if(!result.Succeeded)
+            {
+                throw new BadRequestException("Invalid or expired Link.");
+            }
         }
     }
 }
