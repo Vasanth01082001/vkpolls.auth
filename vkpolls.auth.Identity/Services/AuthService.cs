@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -101,6 +102,10 @@ namespace vkpolls.auth.Identity.Services
                     }
                     else
                     {
+
+                        var ptoken = await _userManager.GeneratePasswordResetTokenAsync(emailUser);
+                        await _userManager.ResetPasswordAsync(emailUser, ptoken, userAuthIdentity.password);
+
                         var etoken = await _userManager.GenerateEmailConfirmationTokenAsync(emailUser);
                         await _emailService.SendEmailVerificationAsync(emailUser.Email!, etoken);
                         return;
@@ -120,7 +125,7 @@ namespace vkpolls.auth.Identity.Services
             }
             else if (username.Length == 10)
             {
-                var phoneUser = _userManager.Users.FirstOrDefault(u => u.PhoneNumber == username);
+                var phoneUser = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == username);
                 if (phoneUser != null)
                 {
                     if(phoneUser.PhoneNumberConfirmed)
@@ -129,6 +134,9 @@ namespace vkpolls.auth.Identity.Services
                     }
                     else
                     {
+                        var passwordtoken = await _userManager.GeneratePasswordResetTokenAsync(phoneUser);
+                        await _userManager.ResetPasswordAsync(phoneUser, passwordtoken, userAuthIdentity.password);
+
                         var ptoken = await _userManager.GenerateChangePhoneNumberTokenAsync(phoneUser, username);
                         await _smsService.SendSmsAsync(username, ptoken);
                         return;
