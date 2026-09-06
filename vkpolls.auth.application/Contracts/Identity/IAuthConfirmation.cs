@@ -11,5 +11,6 @@ namespace vkpolls.auth.Application.Contracts.Identity
     {
         Task VerifyOtpAsync(OtpVerify otpVerify);
         Task VerifyEmailAsync(EmailVerify emailVerify);
+        Task VerifyOtpTokenAsync(OtpTokenVerify otpTokenVerify);
     }
 }

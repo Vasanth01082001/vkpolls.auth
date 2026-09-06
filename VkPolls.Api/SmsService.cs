@@ -18,7 +18,7 @@ namespace vkpolls.auth.ApiClient
         }
         public async Task<string> SendSmsAsync(string phoneNumber, string otpCode)
         {
-            var response = await _apiClient.PostAsync<OTPStatus>(ApiEndpoints.SendSms, new { phoneNumber, otpCode });
+            var response = await _apiClient.PostAsync<SMSStatus>(ApiEndpoints.SendSms, new { phoneNumber, otpCode });
             return response!.message;
         }
     }
@@ -38,7 +38,7 @@ namespace vkpolls.auth.ApiClient
         }
     }
 
-    public class OTPStatus
+    public class SMSStatus
     {
         public string message { get; set; } = string.Empty;
     }

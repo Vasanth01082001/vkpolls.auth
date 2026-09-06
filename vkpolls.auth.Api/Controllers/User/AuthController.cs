@@ -45,5 +45,12 @@ namespace vkpolls.auth.Api.Controllers.User
             await _authConfirmation.VerifyEmailAsync(emailVerify);
             return Ok("Email verified successfully");
         }
+
+        [HttpPost("VerifyOtpToken")]
+        public async Task<IActionResult> VerifyOtpToken(OtpTokenVerify otpTokenVerify)
+        {
+            await _authConfirmation.VerifyOtpTokenAsync(otpTokenVerify);
+            return Ok("OTP verified successfully");
+        }
     }
 }

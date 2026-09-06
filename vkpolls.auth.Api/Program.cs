@@ -12,6 +12,7 @@ builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddSmsService(builder.Configuration);
 builder.Services.AddEmailService(builder.Configuration);
+builder.Services.AddOtpService(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
