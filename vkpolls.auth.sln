@@ -5,15 +5,9 @@ VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vkpolls.auth.Application", "vkpolls.auth.application\vkpolls.auth.Application.csproj", "{5C87C3CD-02CC-47AC-BE2A-7379497EB9B2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vkpolls.auth.Domain", "vkpolls.auth.Domain\vkpolls.auth.Domain.csproj", "{C7133B8A-6DBA-4438-8CFA-055F3173AE09}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{35359520-A187-4F92-9AD8-13F60F724D48}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vkpolls.auth.Web", "vkpolls.auth.Api\vkpolls.auth.Web.csproj", "{CFD07496-3D49-4DE4-8840-4BC3A749467A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{160D4485-3437-4F3A-9ED8-6CE14A5FF1B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vkpolls.auth.Identity", "vkpolls.auth.Identity\vkpolls.auth.Identity.csproj", "{30401F68-FCC5-484C-8845-699B533FD0E0}"
 EndProject
@@ -54,14 +48,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{5C87C3CD-02CC-47AC-BE2A-7379497EB9B2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{C7133B8A-6DBA-4438-8CFA-055F3173AE09} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{CFD07496-3D49-4DE4-8840-4BC3A749467A} = {35359520-A187-4F92-9AD8-13F60F724D48}
-		{30401F68-FCC5-484C-8845-699B533FD0E0} = {160D4485-3437-4F3A-9ED8-6CE14A5FF1B3}
-		{E507A300-539D-4DB1-B66C-388865DFA149} = {160D4485-3437-4F3A-9ED8-6CE14A5FF1B3}
-		{95668E9D-E308-4BE1-A690-5D478A011DEB} = {160D4485-3437-4F3A-9ED8-6CE14A5FF1B3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4A5E33ED-DFB7-4316-8DDF-F8F0349A8071}
